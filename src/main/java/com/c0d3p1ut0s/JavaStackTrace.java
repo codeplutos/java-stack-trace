@@ -18,8 +18,7 @@ public class JavaStackTrace {
             return;
         }
         if(agentArgArray[0].equals(StackTraceHelper.METHOD)){
-            String methodPrefix=agentArgArray[1].replace(".","/");
-            StackTraceHelper.methodPrefix.add(methodPrefix);
+            StackTraceHelper.methodPrefix.add(agentArgArray[1]);
         }else {
             if (!agentArgArray[0].equals(StackTraceHelper.FILE) || !StackTraceHelper.loadMethodFile(agentArgArray[1])) {
                 StackTraceHelper.printUsage();

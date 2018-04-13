@@ -41,19 +41,22 @@ class ClassAdapter extends ClassVisitor implements Opcodes {
                                      final String desc, final String signature, final String[] exceptions) {
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
 
-        final String methodName = clazzName + "/" + name;
+        final String methodName = clazzName.replace('/','.') + "." + name;
         for(String methodPrefix:StackTraceHelper.methodPrefix){
             if(methodName.startsWith(methodPrefix)){
                 MethodVisitor nmv = new AdviceAdapter(Opcodes.ASM5, mv, access, name, desc) {
                     @Override
                     protected void onMethodEnter() {
                         mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-                        mv.visitLdcInsn("Method " + methodName);
+                        mv.visitLdcInsn("Enter Method: " + methodName);
                         mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
 
-                        mv.visitMethodInsn(INVOKESTATIC, "java/lang/Thread", "currentThread", "()Ljava/lang/Thread;", false);
-                        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Thread", "getStackTrace", "()[Ljava/lang/StackTraceElement;", false);
-                        mv.visitMethodInsn(INVOKESTATIC, "com/c0d3p1ut0s/StackTraceHelper", "enterMethod", "([Ljava/lang/StackTraceElement;)V", false);
+                        mv.visitTypeInsn(NEW, "java/lang/Exception");
+                        mv.visitInsn(DUP);
+                        mv.visitLdcInsn("Java Stack Trace");
+                        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Exception", "<init>", "(Ljava/lang/String;)V", false);
+                        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+                        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Exception", "printStackTrace", "(Ljava/io/PrintStream;)V", false);
                     }
                 };
                 return nmv;
