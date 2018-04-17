@@ -1,6 +1,7 @@
 package com.c0d3p1ut0s;
 
 
+import java.io.*;
 import java.util.ArrayList;
 
 public class StackTraceHelper {
@@ -22,6 +23,24 @@ public class StackTraceHelper {
     }
 
     public static boolean loadMethodFile(String fileName){
-        return true;
+        File file=new File(fileName);
+        if(!file.exists()||!file.isFile()){
+            System.err.println(fileName+" is not exist or is not file.");
+            return false;
+        }
+        try{
+            InputStreamReader read = new InputStreamReader(new FileInputStream(file));
+            BufferedReader bufferedReader = new BufferedReader(read);
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                methodPrefix.add(line.trim());
+            }
+            bufferedReader.close();
+            read.close();
+            return true;
+        }catch(IOException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }
