@@ -5,30 +5,30 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class StackTraceHelper {
-    public static final String METHOD="m";
-    public static final String FILE="f";
+    public static final String METHOD = "m";
+    public static final String FILE = "f";
 
-    public static ArrayList<String> methodPrefix=new ArrayList<String>();
+    public static ArrayList<String> methodPrefix = new ArrayList<String>();
 
-    public static void enterMethod(StackTraceElement[] stackTraceElements){
+    public static void enterMethod(StackTraceElement[] stackTraceElements) {
         System.out.println("JavaStackTrace: ");
-        for(StackTraceElement stackTraceElement:stackTraceElements){
-            System.out.println("\tat "+stackTraceElement);
+        for (StackTraceElement stackTraceElement : stackTraceElements) {
+            System.out.println("\tat " + stackTraceElement);
         }
         System.out.println("");
     }
 
-    public static void printUsage(){
-        System.out.println("Usage: ");
+    public static void printUsage() {
+        System.out.println("Usage: -javaagent:java-stack-trace-1.0-SNAPSHOT-jar-with-dependencies.jar=[m:method name|f:file name]");
     }
 
-    public static boolean loadMethodFile(String fileName){
-        File file=new File(fileName);
-        if(!file.exists()||!file.isFile()){
-            System.err.println(fileName+" is not exist or is not file.");
+    public static boolean loadMethodFile(String fileName) {
+        File file = new File(fileName);
+        if (!file.exists() || !file.isFile()) {
+            System.err.println(fileName + " is not exist or is not file.");
             return false;
         }
-        try{
+        try {
             InputStreamReader read = new InputStreamReader(new FileInputStream(file));
             BufferedReader bufferedReader = new BufferedReader(read);
             String line = null;
@@ -38,7 +38,7 @@ public class StackTraceHelper {
             bufferedReader.close();
             read.close();
             return true;
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }

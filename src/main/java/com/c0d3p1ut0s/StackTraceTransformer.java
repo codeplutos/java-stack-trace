@@ -29,7 +29,7 @@ public class StackTraceTransformer implements ClassFileTransformer {
 }
 
 class ClassAdapter extends ClassVisitor implements Opcodes {
-    String clazzName=null;
+    String clazzName = null;
 
     public ClassAdapter(final ClassVisitor cv, String className) {
         super(ASM5, cv);
@@ -41,9 +41,9 @@ class ClassAdapter extends ClassVisitor implements Opcodes {
                                      final String desc, final String signature, final String[] exceptions) {
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
 
-        final String methodName = clazzName.replace('/','.') + "." + name;
-        for(String methodPrefix:StackTraceHelper.methodPrefix){
-            if(methodName.startsWith(methodPrefix)){
+        final String methodName = clazzName.replace('/', '.') + "." + name;
+        for (String methodPrefix : StackTraceHelper.methodPrefix) {
+            if (methodName.startsWith(methodPrefix)) {
                 MethodVisitor nmv = new AdviceAdapter(Opcodes.ASM5, mv, access, name, desc) {
                     @Override
                     protected void onMethodEnter() {

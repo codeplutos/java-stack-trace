@@ -6,20 +6,19 @@ import java.lang.instrument.UnmodifiableClassException;
 
 
 public class JavaStackTrace {
-    public static void premain(String agentArgs, Instrumentation inst) throws NoSuchFieldException, IllegalAccessException, UnmodifiableClassException
-    {
-        if(agentArgs==null){
+    public static void premain(String agentArgs, Instrumentation inst) throws NoSuchFieldException, IllegalAccessException, UnmodifiableClassException {
+        if (agentArgs == null) {
             StackTraceHelper.printUsage();
             return;
         }
-        String[] agentArgArray=agentArgs.split(":");
-        if(agentArgArray.length!=2){
+        String[] agentArgArray = agentArgs.split(":");
+        if (agentArgArray.length != 2) {
             StackTraceHelper.printUsage();
             return;
         }
-        if(agentArgArray[0].equals(StackTraceHelper.METHOD)){
+        if (agentArgArray[0].equals(StackTraceHelper.METHOD)) {
             StackTraceHelper.methodPrefix.add(agentArgArray[1]);
-        }else {
+        } else {
             if (!agentArgArray[0].equals(StackTraceHelper.FILE) || !StackTraceHelper.loadMethodFile(agentArgArray[1])) {
                 StackTraceHelper.printUsage();
                 return;
