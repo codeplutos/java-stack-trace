@@ -2,6 +2,7 @@
 
 java-stack-trace是一个用于调试的java instrument，指定方法前缀，它能在指定前缀的方法被调用时打印当前堆栈。
 
+由于asm的限制，仅支持jdk1.8及以上
 ### 编译
 ```shell
 mvn package
